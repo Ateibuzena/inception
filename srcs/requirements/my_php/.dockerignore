@@ -1,0 +1,14 @@
+# Ignorar imágenes exportadas
+../../images/*.tar
+
+# Ignorar logs y temporales
+*.log
+*.tmp
+*.swp
+
+# Ignorar secretos
+../../../secrets/*.txt
+
+# Archivos del host que no se necesitan en el contenedor
+.vscode/
+.idea/

@@ -1,5 +1,5 @@
 # Usar Debian oldstable como base
-FROM debian:bullseye
+FROM debian:oldstable
 
 # Instalar Nginx y OpenSSL
 RUN apt-get update && \

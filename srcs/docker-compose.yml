@@ -1,6 +1,7 @@
 services:
   my_nginx:
     build: ./requirements/my_nginx
+    image: my_nginx
     container_name: my_nginx
     ports:
       - "443:443"   # HTTPS dentro de la VM
@@ -8,25 +9,27 @@ services:
     volumes:
       - wp-data:/var/www/   # coincide con la ruta que WordPress usa
     depends_on:
-      - my_wordpress
-    restart: always
+      - my_php
+    restart: unless-stopped
     networks:
       - my_network
 
-  my_wordpress:
-    build: ./requirements/my_wordpress
-    container_name: my_wordpress
+  my_php:
+    build: ./requirements/my_php
+    image: my_php
+    container_name: my_php
     env_file: ./.env
     volumes:
       - wp-data:/var/www/   # coincide con Nginx
     depends_on:
       - my_mariadb
-    restart: always
+    restart: unless-stopped
     networks:
       - my_network
 
   my_mariadb:
     build: ./requirements/my_mariadb
+    image: my_mariadb
     container_name: my_mariadb
     environment:
       - MARIADB_DATABASE=my_wordpressdb

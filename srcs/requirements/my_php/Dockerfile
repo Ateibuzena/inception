@@ -1,4 +1,4 @@
-FROM debian:bullseye
+FROM debian:oldstable
 
 # Instalamos PHP, extensiones necesarias, curl y mariadb-client
 RUN apt-get update && \

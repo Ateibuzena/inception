@@ -1,0 +1,11 @@
+# Archivos temporales
+*.log
+*.tmp
+*.swp
+
+# Secretos
+../../../secrets/*.txt
+
+# Archivos del host/IDE
+.vscode/
+.idea/

@@ -1,4 +1,4 @@
-FROM debian:bullseye
+FROM debian:oldstable
 
 # Instalamos mariadb y utilidades
 RUN apt-get update && \
