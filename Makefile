@@ -1,7 +1,7 @@
 # Makefile for Inception - handling local images and containers
 
 COMPOSE = docker-compose -f srcs/docker-compose.yml
-IMAGES_DIR = ./srcs/images
+IMAGES_DIR = ./images
 VOLUMES_DIR = /home/azubieta/data
 
 # Local image names
@@ -89,4 +89,4 @@ refresh:
 		echo "	❎  There are no containers running to restart."; \
 	fi
 
-.PHONY: all clean fclean up down re load-or-build-images refresh
+.PHONY: all clean fclean up down re load-or-build-images refresh images
