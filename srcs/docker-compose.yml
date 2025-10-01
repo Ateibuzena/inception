@@ -4,13 +4,13 @@ services:
     image: my_nginx
     container_name: my_nginx
     ports:
-      - "443:443"   # HTTPS dentro de la VM
-      - "8080:80"   # HTTP desde host/VM si quieres
+      - "443:443"   # HTTPS inside VM
+      - "8080:80"   # HTTP from host/VM optional
     volumes:
-      - wp-data:/var/www/   # coincide con la ruta que WordPress usa
+      - wp-data:/var/www/   # like PHP path 
     depends_on:
       - my_php
-    restart: unless-stopped
+    restart: on-failure
     networks:
       - my_network
 
@@ -20,10 +20,10 @@ services:
     container_name: my_php
     env_file: ./.env
     volumes:
-      - wp-data:/var/www/   # coincide con Nginx
+      - wp-data:/var/www/   # like Nginx
     depends_on:
       - my_mariadb
-    restart: unless-stopped
+    restart: on-failure
     networks:
       - my_network
 
@@ -41,7 +41,7 @@ services:
       - db_root_password
     volumes:
       - db-data:/var/lib/mysql
-    restart: unless-stopped
+    restart: on-failure
     networks:
       - my_network
 
@@ -55,10 +55,19 @@ volumes:
   wp-data:
     name: wp-data
     driver: local
+    driver_opts:
+      type: none
+      device: /home/azubieta/data/my_php
+      o: bind
 
   db-data:
     name: db-data
     driver: local
+    driver_opts:
+      type: none
+      device: /home/azubieta/data/my_mariadb
+      o: bind
 
 networks:
   my_network:
+    name: my_network

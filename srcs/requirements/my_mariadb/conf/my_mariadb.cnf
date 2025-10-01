@@ -6,6 +6,6 @@ datadir                     = /var/lib/mysql
 bind-address                = 0.0.0.0
 port                        = 3306
 
-# Mejoras de compatibilidad
+# Compatibility improvements
 skip-networking=0
 skip-bind-address

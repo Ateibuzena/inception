@@ -1,5 +1,5 @@
 # -------------------------------
-# Docker images exportadas
+# Exported Docker images
 # -------------------------------
 srcs/images/*.tar
 
@@ -9,7 +9,7 @@ srcs/images/*.tar
 secrets/*.txt
 
 # -------------------------------
-# Archivos temporales del sistema
+# Temporary system files
 # -------------------------------
 *.swp
 *.tmp
@@ -20,3 +20,8 @@ secrets/*.txt
 # Logs
 # -------------------------------
 *.log
+
+# -------------------------------
+# Enviroment variables
+# -------------------------------
+*.env
