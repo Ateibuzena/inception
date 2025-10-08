@@ -1,15 +1,15 @@
-# Makefile para Inception - limpio, eficiente y friendly
+# Makefile for Inception - clean, efficient, and friendly
 
 COMPOSE = docker compose -f srcs/docker-compose.yml
 DATA_DIR = /home/azubieta/data
 VOLUMES = my_mariadb my_php
 
 # ---------------------------
-# Regla principal: build + up
+# Main rule: build + up
 all: prepare build up
 
 # ---------------------------
-# Crear carpetas de volúmenes si no existen
+# Create volume folders if they don't exist
 prepare:
 	@echo "📂 Creating data folders if missing..."
 	@mkdir -p $(DATA_DIR)
@@ -18,24 +18,25 @@ prepare:
 	done
 
 # ---------------------------
-# Construir todas las imágenes con docker-compose
+# Build all images with docker-compose
 build:
 	@echo "🐳 Building all images..."
 	@$(COMPOSE) build
 
 # ---------------------------
-# Levantar contenedores
+# Start containers
 up:
 	@echo "🐳 Lifting containers..."
 	@$(COMPOSE) up -d
 
 # ---------------------------
-# Bajar contenedores
+# Stop containers
 down:
 	@echo "🐳 Shutting down containers..."
 	@$(COMPOSE) down
 
 # ---------------------------
+# Clean containers, volumes, networks, and data
 clean:
 	@echo "🐳 Cleaning containers, volumes, networks, and data..."
 	-@docker stop $$(docker ps -aq) 2>/dev/null || echo "❎ No containers running."
@@ -45,18 +46,18 @@ clean:
 	-@rm -rf $(DATA_DIR)
 
 # ---------------------------
-# Eliminar absolutamente todo (imágenes, contenedores, volúmenes)
+# Remove absolutely everything (images, containers, volumes)
 fclean: clean
 	@echo "⚠️ Deleting all images..."
 	-@docker rmi -f $$(docker images -q) 2>/dev/null || echo "❎ No images to delete."
 	-@docker system prune -af --volumes
 
 # ---------------------------
-# Reconstruir y levantar todo desde cero
+# Rebuild and lift everything from scratch
 re: fclean all
 
 # ---------------------------
-# Reiniciar contenedores sin reconstruir
+# Restart containers without rebuilding
 refresh:
 	@echo "🐳 Restarting containers..."
 	@if [ -n "$$(docker ps -q)" ]; then \
