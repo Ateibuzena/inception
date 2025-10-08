@@ -52,5 +52,8 @@ fi
 # Secure permissions
 chown -R www-data:www-data /var/www/
 
+# Change permissions of wp-data
+chmod -R 777 /var/www/
+
 # We start PHP-FPM in the foreground
 exec php-fpm8.2 -F

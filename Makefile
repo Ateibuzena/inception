@@ -2,7 +2,7 @@
 
 COMPOSE = docker compose -f srcs/docker-compose.yml
 DATA_DIR = /home/azubieta/data
-VOLUMES = my_mariadb my_php
+VOLUMES = db-data wp-data
 
 # ---------------------------
 # Main rule: build + up
@@ -36,21 +36,32 @@ down:
 	@$(COMPOSE) down
 
 # ---------------------------
+# ---------------------------
 # Clean containers, volumes, networks, and data
 clean:
-	@echo "🐳 Cleaning containers, volumes, networks, and data..."
+	@echo "🧹 Starting cleanup process..."
+	@echo "🚫 Stopping containers..."
 	-@docker stop $$(docker ps -aq) 2>/dev/null || echo "❎ No containers running."
+	@echo "🗑️ Removing containers..."
 	-@docker rm -f $$(docker ps -aq) 2>/dev/null || echo "❎ No containers to remove."
-	-@docker volume rm mariadb_data php_data 2>/dev/null || echo "❎ No volumes to remove."
-	-@docker network rm $$(docker network ls -q | grep -vE "bridge|host|none") 2>/dev/null || echo "❎ No custom networks."
-	-@rm -rf $(DATA_DIR)
+	@echo "📦 Removing Docker volumes..."
+	-@docker volume rm $$(docker volume ls -q) 2>/dev/null || echo "❎ No volumes to remove."
+	@echo "🌐 Removing custom networks..."
+	-@docker network rm $$(docker network ls -q | grep -vE "bridge|host|none") 2>/dev/null || echo "❎ No custom networks to remove."
+	@echo "🧼 Deleting local data directory..."
+	-@rm -rf $(DATA_DIR) && echo "✅ Data folder deleted." || echo "❎ No data folder to delete."
+	@echo "✨ Clean completed!"
 
 # ---------------------------
 # Remove absolutely everything (images, containers, volumes)
 fclean: clean
-	@echo "⚠️ Deleting all images..."
+	@echo "⚠️ Deep cleaning Docker system..."
+	@echo "🖼️ Removing Docker images..."
 	-@docker rmi -f $$(docker images -q) 2>/dev/null || echo "❎ No images to delete."
+	@echo "🧨 Running system prune (everything, including volumes)..."
 	-@docker system prune -af --volumes
+	@echo "🧹 Full cleanup completed successfully!"
+
 
 # ---------------------------
 # Rebuild and lift everything from scratch

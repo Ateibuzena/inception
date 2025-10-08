@@ -39,22 +39,13 @@ mysql -uroot <<-EOSQL
     GRANT ALL PRIVILEGES ON ${MARIADB_DATABASE}.* TO '${MARIADB_USER}'@'%';
     FLUSH PRIVILEGES;
 
-    USE ${MARIADB_DATABASE};
-
-    CREATE TABLE IF NOT EXISTS test (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        autor VARCHAR(50) NOT NULL,
-        content TEXT NOT NULL,
-        creado TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-
-    INSERT INTO test (autor, content) VALUES
-        ('Ana', 'Hello world from Inception 🚀'),
-        ('ChatGPT', 'DB works');
 EOSQL
 
 # Temporarily stop MariaDB
 mysqladmin -uroot -p"${ROOT_PASSWORD}" shutdown
+
+# Change permissions of db-data
+chmod -R 777 /var/lib/mysql
 
 # Start in foreground (container mode)
 echo ">> MariaDB started successfully, ready to receive connections."

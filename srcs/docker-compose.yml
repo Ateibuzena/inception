@@ -57,7 +57,19 @@ secrets:
 
 volumes:
   wp-data:
+    name: wp-data
+    driver: local
+    driver_opts:
+      type: none
+      device: ~/data/wp-data
+      o: bind
   db-data:
+    name: db-data
+    driver: local
+    driver_opts:
+      type: none
+      device: ~/data/db-data
+      o: bind
     
 networks:
   my_network:
