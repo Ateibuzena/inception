@@ -18,6 +18,8 @@ services:
     build: ./requirements/my_php
     image: my_php
     container_name: my_php
+    ports:
+      - "9000"   # PHP-FPM
     env_file: ./.env
     volumes:
       - wp-data:/var/www/   # like Nginx
@@ -31,6 +33,8 @@ services:
     build: ./requirements/my_mariadb
     image: my_mariadb
     container_name: my_mariadb
+    ports:
+      - "3306"   # MariaDB
     environment:
       - MARIADB_DATABASE=my_wordpressdb
       - MARIADB_USER=wp_user
@@ -53,20 +57,10 @@ secrets:
 
 volumes:
   wp-data:
-    name: wp-data
-    driver: local
-    driver_opts:
-      type: none
-      device: /home/azubieta/data/my_php
-      o: bind
+    
 
   db-data:
-    name: db-data
-    driver: local
-    driver_opts:
-      type: none
-      device: /home/azubieta/data/my_mariadb
-      o: bind
+    
 
 networks:
   my_network:
